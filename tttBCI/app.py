@@ -39,7 +39,9 @@ def connect():
 
 @app.route("/dashboard")
 def dashboard():
-    return render_template("dashboard.html")
+    if BOARD.connected:
+        return render_template("dashboard.html")
+    return redirect(url_for("connect", ))
 
 
 @app.route("/disconnect", methods=["POST"])
