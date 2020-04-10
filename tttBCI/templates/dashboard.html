@@ -1,0 +1,15 @@
+{% extends "template.html" %}
+
+
+{% block body %}
+<div class="dashboard">
+  <strong>
+    <span class="alert"><font color="green">CONNECTED</font></span>
+  </strong>
+</div>
+<div class="form">
+    <form id="disconnect" action="{{ url_for('disconnect') }}" method="post">
+        <button type="submit" name="disconnect">Disconnect</button>
+    </form>
+</div>
+{% endblock %}

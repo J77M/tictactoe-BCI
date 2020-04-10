@@ -36,23 +36,36 @@
               </fieldset>
             <!--add button - to show more options : timeout, log, streamer-params, other-info-->
             <span>other parameters</span>
-            <select name="log_level">
-                <option value="" selected disabled hidden>Choose Log level</option>
+            <select name="log_level" id="log_level">
                 {% for log_level in log_levels %}
-                    <option value="{{log_level.value}}">{{log_level.name}}</option>
+                    {% if log_level.value == 6 %}
+                        <option value="{{log_level.value}}" selected="selected">{{log_level.name}}</option>
+                    {% else %}
+                        <option value="{{log_level.value}}">{{log_level.name}}</option>
+                    {% endif %}
                 {% endfor %}
             </select>
-            <select name="ip_protocol_type">
-                <option value="" selected disabled hidden>Choose IP protocol</option>
+            <label for="log_level">Log Level</label>
+            <select name="ip_protocol_type" id="ip_protocol_type">
                 {% for ip_protocol_type in ip_protocol_types %}
-                    <option value="{{ip_protocol_type.value}}">{{ip_protocol_type.name}}</option>
+                  {% if ip_protocol_type.value == 0 %}
+                        <option value="{{ip_protocol_type.value}}" selected="selected">{{ip_protocol_type.name}}</option>
+                  {% else %}
+                        <option value="{{ip_protocol_type.value}}">{{ip_protocol_type.name}}</option>
+                  {% endif %}
                 {% endfor %}
             </select>
-            <input type="number" name="timeout" placeholder="Timeout" value="15">
+            <label for="ip_protocol_type">Ip Protocol Type</label>
+            <input type="number" name="timeout" id="timeout" placeholder="Timeout" value="15">
+            <label for="timeout">Timeout</label>
             <!--add other parameters-->
+            <!--add log file-->
             <!--future improvement - every board - object should have its properties - check if objects exists in brainflow-->
             <!--or create them -> required input fields should appear based on board specification | also custom boards for testing-->
             <button type="submit" name="submit_connection_parameters">Submit Connection Parameters</button>
         </form>
     </div>
+  <strong>
+    <span class="alert"><font color="gray">{{status}}</font></span>
+  </strong>
 {% endblock %}
