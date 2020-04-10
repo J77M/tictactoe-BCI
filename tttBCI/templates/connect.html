@@ -1,0 +1,58 @@
+{% extends "template.html" %}
+
+
+{% block body %}
+    <div class="form">
+        <div class="alert wrong-data">
+          {% if message %}
+          <strong>
+            <span class="alert"><font color="red">{{message}}</font></span>
+          </strong>
+         {% else %}
+         {% endif %}
+        </div>
+        <form id="connection-establishment" method="post">
+            <select name="board_id">
+                <option value="" selected disabled hidden>Choose Board</option>
+                {% for board in boards %}
+                    <option value="{{board.value}}">{{board.name}}</option>
+                {% endfor %}
+            </select>
+              <fieldset id="serial_port">
+                <input type="radio" value="auto" name="serial_port" id="serial_port_auto_radio" checked="checked">
+                  <label for="serial_port_auto_radio">serial port search</label>
+                <input type="radio" value="input" name="serial_port" id="serial_port_input_radio">
+                  <label for="serial_port_input_radio">input serial port</label>
+                  <!--input should appear-->
+                  <input type="text" id="serial_port_input" name="serial_port" placeholder="Serial Port">
+              </fieldset>
+              <fieldset id="mac_address">
+                <input type="radio" value="auto" name="mac_address" id="mac_address_auto_radio" checked="checked">
+                  <label for="mac_address_auto_radio">mac address search</label>
+                <input type="radio" value="input" name="mac_address" id="mac_address_input_radio">
+                  <label for="mac_address_input_radio">input MAC address</label>
+                  <!--input should appear-->
+                  <input type="text" id="mac_address_input" name="mac_address" placeholder="MAC address">
+              </fieldset>
+            <!--add button - to show more options : timeout, log, streamer-params, other-info-->
+            <span>other parameters</span>
+            <select name="log_level">
+                <option value="" selected disabled hidden>Choose Log level</option>
+                {% for log_level in log_levels %}
+                    <option value="{{log_level.value}}">{{log_level.name}}</option>
+                {% endfor %}
+            </select>
+            <select name="ip_protocol_type">
+                <option value="" selected disabled hidden>Choose IP protocol</option>
+                {% for ip_protocol_type in ip_protocol_types %}
+                    <option value="{{ip_protocol_type.value}}">{{ip_protocol_type.name}}</option>
+                {% endfor %}
+            </select>
+            <input type="number" name="timeout" placeholder="Timeout" value="15">
+            <!--add other parameters-->
+            <!--future improvement - every board - object should have its properties - check if objects exists in brainflow-->
+            <!--or create them -> required input fields should appear based on board specification | also custom boards for testing-->
+            <button type="submit" name="submit_connection_parameters">Submit Connection Parameters</button>
+        </form>
+    </div>
+{% endblock %}
