@@ -36,6 +36,7 @@
               </fieldset>
             <!--add button - to show more options : timeout, log, streamer-params, other-info-->
             <span>other parameters</span>
+            <br>
             <select name="{{connection_element_names['log_level']}}" id="log_level">
                 {% for log_level in boards_properties["log_levels"] %}
                     {% if log_level.value == 6 %}

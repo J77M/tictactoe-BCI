@@ -15,7 +15,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 app.debug = True
 
 socketio = SocketIO(app)
-BOARD = MainBoard()
+DEVICE = MainBoard()
 Session(app)
 
 @app.context_processor
@@ -27,43 +27,37 @@ def connect():
     alert = None
     # check connection - if not connected render : connect else dashboard
     if request.method == "POST":
-        board_id, log_level, params = BOARD.extract_params(request)
+        board_id, log_level, params = DEVICE.extract_params(request)
         if board_id:
             try:
-                BOARD.set_board(board_id, params)
-                BOARD.board.set_log_level(log_level)
-                BOARD.connect()
+                DEVICE.set_board(board_id, params)
+                DEVICE.board.set_log_level(log_level)
+                DEVICE.connect()
             except BrainFlowError as e:
                 alert = e
         else:
             alert = "Board ID not specified"
-    if BOARD.connected:
+    if DEVICE.connected:
         return redirect(url_for("dashboard"))
-    return render_template("connect.html", status=BOARD.status_message, message=alert)
+    return render_template("connect.html", status=DEVICE.status_message, message=alert)
 
 @app.route("/dashboard")
 def dashboard():
-    if BOARD.connected:
+    if DEVICE.connected:
         return render_template("dashboard.html")
     return redirect(url_for("connect"))
 
-
 @app.route("/disconnect", methods=["POST"])
 def disconnect():
-    BOARD.disconnect()
+    DEVICE.disconnect()
     return redirect(url_for("connect"))
 
 @socketio.on("start-stream")
 def data_stream_control(data):
     if data["action"] == "start":
-        BOARD.board.start_stream()
-        # TODO: separate files !! - change strucure !!!
-        while True:
-            data = BOARD.board.get_board_data ()
-            emit("return data", {"data": data[BOARD.board.get_eeg_channels(BOARD.board.board_id)][0].tolist()})
-            sleep(0.5)
+        DEVICE.board.start_stream()
     else:
-        BOARD.board.stop_stream()
+        DEVICE.board.stop_stream()
 
 
 if __name__ == "__main__":

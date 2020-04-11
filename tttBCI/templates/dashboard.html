@@ -3,10 +3,19 @@
 
 {% block body %}
 <script src="static/js/dashboard.js"></script>
-<div class="dashboard">
-  <strong>
+<strong>
     <span class="alert"><font color="green">CONNECTED</font></span>
-  </strong>
+</strong>
+<div class="form">
+    <button type="submit" id="model-calibration" value="0">Start Calibration</button>
+    <button type="submit" id="model-test" hidden value="0">Test</button>
+    <button type="submit" id="model-play" hidden value="0">Play</button>
+    <br>
+    <select name="saved-models">
+        <option value="" selected disabled hidden>Choose Model</option>
+    </select>
+</div>
+<div class="dashboard">
     <section>
         <div class="game-container">
             <div data-cell-index="0" class="cell"></div>
