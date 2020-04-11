@@ -23,6 +23,12 @@
 
       // When a new vote is announced, add to the unordered list
       socket.on('return data', function(data){
-        console.log(data.data)
-      });
+        let traces = []
+        x_data = data.time
+        for (i = 0; i < data.data.length; i++) {
+              var trace = {x: x_data, y: data.data[i], mode: 'lines', type: 'scatter'};
+              traces.push(trace)
+        }
+        Plotly.newPlot('data-stream-graph', traces);
+    })
   });

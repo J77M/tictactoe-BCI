@@ -8,23 +8,14 @@
     <span class="alert"><font color="green">CONNECTED</font></span>
   </strong>
     <section>
-        <div class="game-container">
-            <div data-cell-index="0" class="cell"></div>
-            <div data-cell-index="1" class="cell"></div>
-            <div data-cell-index="2" class="cell"></div>
-            <div data-cell-index="3" class="cell"></div>
-            <div data-cell-index="4" class="cell"></div>
-            <div data-cell-index="5" class="cell"></div>
-            <div data-cell-index="6" class="cell"></div>
-            <div data-cell-index="7" class="cell"></div>
-            <div data-cell-index="8" class="cell"></div>
+        <div id="data-stream-graph">
+
         </div>
-        <h2 class="game-status"></h2>
-        <button class="game-restart">Restart Game</button>
+        <h2 class="data-stream-status"></h2>
+        <button type="submit"  id="data_stream_control" value="start">Start Stream</button>
     </section>
 </div>
 <div class="form">
-    <button type="submit"  id="data_stream_control" value="start">Start Stream</button>
     <form id="disconnect" action="{{ url_for('disconnect') }}" method="post">
         <button type="submit" name="disconnect">Disconnect</button>
     </form>

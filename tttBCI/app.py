@@ -59,9 +59,10 @@ def data_stream_control(data):
         BOARD.board.start_stream()
         # TODO: separate files !! - change strucure !!!
         while True:
-            data = BOARD.board.get_board_data ()
-            emit("return data", {"data": data[BOARD.board.get_eeg_channels(BOARD.board.board_id)][0].tolist()})
-            sleep(0.5)
+            data = BOARD.get_json_data()
+            if data:
+                emit("return data", data)
+            sleep(BOARD.emit_delay)
     else:
         BOARD.board.stop_stream()
 
