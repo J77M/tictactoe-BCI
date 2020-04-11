@@ -4,11 +4,9 @@ from flask_socketio import SocketIO, emit
 from brainflow.board_shim import BrainFlowError
 from enviroment import boards_properties, connection_element_names
 from boards import MainBoard
-from time import sleep # TODO REMOVEE
 
 app = Flask(__name__)
 
-#https://github.com/gothinkster/flask-realworld-example-app
 
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"

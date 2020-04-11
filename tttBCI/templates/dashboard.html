@@ -2,34 +2,39 @@
 
 
 {% block body %}
-<script src="static/js/dashboard.js"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 <strong>
     <span class="alert"><font color="green">CONNECTED</font></span>
 </strong>
 <div class="form">
-    <button type="submit" id="model-calibration" value="0">Start Calibration</button>
-    <button type="submit" id="model-test" hidden value="0">Test</button>
-    <button type="submit" id="model-play" hidden value="0">Play</button>
+    <button id="model-calibration" value="false">Start Calibration</button>
+    <!--<button id="model-test" hidden value="false">Test</button>-->
+    <button id="model-play" disabled value="false">Play</button>
     <br>
-    <select name="saved-models">
-        <option value="" selected disabled hidden>Choose Model</option>
+    <select id="saved-models">
+        <option value="" selected>Choose Model</option>
+        <option value="test">test_model_1</option>
     </select>
+    <form id="model-save" hidden>
+        <input type="text" id="model-save-name" placeholder="Model Name">
+        <button type="button" id="model-save-submit" disabled>Save</button>
+    </form>
 </div>
 <div class="dashboard">
     <section>
         <div class="game-container">
-            <div data-cell-index="0" class="cell"></div>
-            <div data-cell-index="1" class="cell"></div>
-            <div data-cell-index="2" class="cell"></div>
-            <div data-cell-index="3" class="cell"></div>
-            <div data-cell-index="4" class="cell"></div>
-            <div data-cell-index="5" class="cell"></div>
-            <div data-cell-index="6" class="cell"></div>
-            <div data-cell-index="7" class="cell"></div>
-            <div data-cell-index="8" class="cell"></div>
+            <div data-cell-index="0" data-cell-row="0" data-cell-column="0" class="cell"></div>
+            <div data-cell-index="1" data-cell-row="0" data-cell-column="1" class="cell"></div>
+            <div data-cell-index="2" data-cell-row="0" data-cell-column="2" class="cell"></div>
+            <div data-cell-index="3" data-cell-row="1" data-cell-column="0" class="cell"></div>
+            <div data-cell-index="4" data-cell-row="1" data-cell-column="1" class="cell"></div>
+            <div data-cell-index="5" data-cell-row="1" data-cell-column="2" class="cell"></div>
+            <div data-cell-index="6" data-cell-row="2" data-cell-column="0" class="cell"></div>
+            <div data-cell-index="7" data-cell-row="2" data-cell-column="1" class="cell"></div>
+            <div data-cell-index="8" data-cell-row="2" data-cell-column="2" class="cell"></div>
         </div>
         <h2 class="game-status"></h2>
-        <button class="game-restart">Restart Game</button>
+        <button id="start-animation">start</button>
     </section>
 </div>
 <div class="form">
