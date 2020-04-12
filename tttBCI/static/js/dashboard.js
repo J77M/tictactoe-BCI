@@ -1,38 +1,58 @@
-function start_animation(num, interval){
+/**
+ * Runs animation cycle(flashing rows and columns)
+ * @cycle_func -  function to be run every cycle
+ * @end_func - function to be run every cycle finished
+ * @events_per_cycle - number of flashing events in cycle
+ * @cycles - number of cycles
+ * @interval - interval between events in cycle (in ms)
+ */
+function run_animation_cycle(cycle_func, end_func, events_per_cycle, cycles, interval){
 
-    var animation_intervalId = null;
-    var animation_counter = 0;
-    var animate = function(){
-         if(document.querySelectorAll(".data-selected").length != 0){
-            console.log("clean");
-            document.querySelectorAll(".data-selected").forEach(function(div){
-                div.style.backgroundColor = "#FFFFFF";
-                div.classList.remove("data-selected")
-            })
-            return;
-         }
-         console.log("color");
-         if(animation_counter <= 10) {
-              animation_counter++;
-              let index = Math.floor(Math.random() * 3)
-              if(Math.floor(Math.random() * 2) == 0){
-                document.querySelectorAll(`div[data-cell-row='${index}']`).forEach(function(div){
-                div.style.backgroundColor = "#ff0000";
-                div.classList.add("data-selected");
+    function start_animation(cycle_func, end_func, events_per_cycle, cycles, interval){
+        var animation_intervalId = null;
+        var animation_counter = 0;
+        var timestamps = [] // change to json : timestamps : row, col
+        var animate = function(){
+             if(document.querySelectorAll(".data-selected").length != 0){
+                document.querySelectorAll(".data-selected").forEach(function(div){
+                    div.style.backgroundColor = "#FFFFFF";
+                    div.classList.remove("data-selected")
                 })
-              } else{
-                document.querySelectorAll(`div[data-cell-column='${index}']`).forEach(function(div){
-                div.style.backgroundColor = "#ff0000";
-                div.classList.add("data-selected");
-                })
-              }
-         } else {
-              clearInterval(animation_intervalId);
-         }
-    };
-    animation_intervalId = null;
-    animation_counter = 0;
-    animation_intervalId = setInterval(animate, interval);
+                return;
+             }
+             if(animation_counter <= events_per_cycle) {
+                  animation_counter++;
+                  let index = Math.floor(Math.random() * 3)
+                  if(Math.floor(Math.random() * 2) == 0){
+                    document.querySelectorAll(`div[data-cell-row='${index}']`).forEach(function(div){
+                    div.style.backgroundColor = "#ff0000";
+                    div.classList.add("data-selected");
+                    })
+                  } else{
+                    document.querySelectorAll(`div[data-cell-column='${index}']`).forEach(function(div){
+                    div.style.backgroundColor = "#ff0000";
+                    div.classList.add("data-selected");
+                    })
+                  }
+//                  timestamps.push(animation_counter);
+             } else {
+                  clearInterval(animation_intervalId);
+//                  console.log(timestamps);
+                  cycle_counter ++;
+                  cycle_func();
+                  if (cycle_counter >= cycles){
+                    end_func();
+                    return;
+                  }
+                  setTimeout(function(){start_animation(cycle_func, end_func, events_per_cycle, cycles, interval)}, interval*2);
+             }
+        };
+        animation_intervalId = null;
+        animation_counter = 0;
+        animation_intervalId = setInterval(animate, interval);
+    }
+    var cycle_counter = 0;
+    start_animation(cycle_func, end_func, events_per_cycle, cycles, interval);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -87,8 +107,20 @@ document.addEventListener('DOMContentLoaded', () => {
    }
 
    document.getElementById('start-animation').onclick = function(){
-    start_animation(10, 500);
+        run_animation_cycle(function(){console.log("cycle");}, function(){console.log("end");}, 10, 5, 200);
    }
+
+   document.querySelectorAll(".not-selected").forEach(function(div){
+        div.onclick = function(){
+            if (! this.classList.contains("disabled")){
+                this.innerHTML = "X";
+                this.classList.remove("not-selected");
+            }
+            document.querySelectorAll(".not-selected").forEach(function(div){
+            div.classList.add("disabled");
+            })
+        }
+   })
 });
 // v events.js - daj animacie
 // websocket.js - daj vsetky connection
