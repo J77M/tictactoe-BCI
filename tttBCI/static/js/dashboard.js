@@ -6,9 +6,9 @@
  * @cycles - number of cycles
  * @interval - interval between events in cycle (in ms)
  */
-function run_animation_cycle(cycle_func, end_func, events_per_cycle, cycles, interval){
+function runAnimationCycle(cycle_func, end_func, events_per_cycle, cycles, interval){
 
-    function start_animation(cycle_func, end_func, events_per_cycle, cycles, interval){
+    function startAnimation(cycle_func, end_func, events_per_cycle, cycles, interval){
         var animation_intervalId = null;
         var animation_counter = 0;
         var timestamps = [] // change to json : timestamps : row, col
@@ -22,7 +22,7 @@ function run_animation_cycle(cycle_func, end_func, events_per_cycle, cycles, int
              }
              if(animation_counter <= events_per_cycle) {
                   animation_counter++;
-                  let index = Math.floor(Math.random() * 3)
+                  let index = Math.floor(Math.random() * 3) // todo: sizexsize value
                   if(Math.floor(Math.random() * 2) == 0){
                     document.querySelectorAll(`div[data-cell-row='${index}']`).forEach(function(div){
                     div.style.backgroundColor = "#ff0000";
@@ -44,7 +44,7 @@ function run_animation_cycle(cycle_func, end_func, events_per_cycle, cycles, int
                     end_func();
                     return;
                   }
-                  setTimeout(function(){start_animation(cycle_func, end_func, events_per_cycle, cycles, interval)}, interval*2);
+                  setTimeout(function(){startAnimation(cycle_func, end_func, events_per_cycle, cycles, interval)}, interval*2);
              }
         };
         animation_intervalId = null;
@@ -52,7 +52,29 @@ function run_animation_cycle(cycle_func, end_func, events_per_cycle, cycles, int
         animation_intervalId = setInterval(animate, interval);
     }
     var cycle_counter = 0;
-    start_animation(cycle_func, end_func, events_per_cycle, cycles, interval);
+    startAnimation(cycle_func, end_func, events_per_cycle, cycles, interval);
+}
+
+function createBoard(size){
+    for (let i=0; i<size**2; i++){
+        var cell = document.createElement('div');
+        cell.classList.add("cell", "not-selected");
+        cell.setAttribute("data-cell-index", i);
+        cell.setAttribute("data-cell-column", i % size);
+        cell.setAttribute("data-cell-row", Math.floor(i/size));
+        document.getElementsByClassName('game-container')[0].append(cell);
+    }
+//    document.querySelectorAll(".not-selected").forEach(function(div){
+//        div.onclick = function(){
+//            if (! this.classList.contains("disabled")){
+//                this.innerHTML = "X";
+//                this.classList.remove("not-selected");
+//            }
+//            document.querySelectorAll(".not-selected").forEach(function(div){
+//            div.classList.add("disabled");
+//            })
+//        }
+//   })
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -76,16 +98,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
    document.getElementById('model-calibration').onclick = function(){
       document.getElementById('model-play').disabled = true;
-      if (this.value == "false"){
-          this.value = "true";
-          this.innerHTML = "Stop Calibration";
+      if (this.value == 'false'){
+          this.value = 'true';
+          this.innerHTML = 'Stop Calibration';
           document.getElementById('saved-models').hidden = true;
-          save_model = document.getElementById('model-save').hidden = false;
+          document.getElementById('model-save').hidden = false;
+          document.getElementById('start-animation').hidden = false;
+          createBoard(3);
       }else{
-          this.value = "false";
-          this.innerHTML = "Start Calibration";
+          this.value = 'false';
+          this.innerHTML = 'Start Calibration';
           document.getElementById('saved-models').hidden = false;
           document.getElementById('model-save').hidden = true;
+          document.getElementById('start-animation').hidden = true;
+          document.getElementsByClassName('game-container')[0].innerHTML = "";
       }
    };
 
@@ -107,20 +133,13 @@ document.addEventListener('DOMContentLoaded', () => {
    }
 
    document.getElementById('start-animation').onclick = function(){
-        run_animation_cycle(function(){console.log("cycle");}, function(){console.log("end");}, 10, 5, 200);
+        setTimeout(function(){runAnimationCycle(function(){console.log("cycle");},
+         function(){console.log("end");}, 10, 5, 200)}, 1000);
    }
 
-   document.querySelectorAll(".not-selected").forEach(function(div){
-        div.onclick = function(){
-            if (! this.classList.contains("disabled")){
-                this.innerHTML = "X";
-                this.classList.remove("not-selected");
-            }
-            document.querySelectorAll(".not-selected").forEach(function(div){
-            div.classList.add("disabled");
-            })
-        }
-   })
+   document.getElementById("model-play").onclick = function(){
+      createBoard(3);
+   }
 });
 // v events.js - daj animacie
 // websocket.js - daj vsetky connection

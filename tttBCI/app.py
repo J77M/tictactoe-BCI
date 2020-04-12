@@ -31,6 +31,7 @@ def connect():
                 DEVICE.set_board(board_id, params)
                 DEVICE.board.set_log_level(log_level)
                 DEVICE.connect()
+                DEVICE.board.start_stream()
             except BrainFlowError as e:
                 alert = e
         else:
@@ -47,7 +48,10 @@ def dashboard():
 
 @app.route("/disconnect", methods=["POST"])
 def disconnect():
-    DEVICE.disconnect()
+    if DEVICE.connected:
+        DEVICE.board.stop_stream()
+        DEVICE.disconnect()
+        return redirect(url_for("connect"))
     return redirect(url_for("connect"))
 
 @socketio.on("start-stream")
