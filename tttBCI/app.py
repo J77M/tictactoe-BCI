@@ -61,6 +61,10 @@ def data_stream_control(data):
     else:
         DEVICE.board.stop_stream()
 
+@socketio.on("event-data")
+def data_stream_control(data):
+    data = data["data"] # to json !!
+    print("event data received")
 
 if __name__ == "__main__":
     app.run()
