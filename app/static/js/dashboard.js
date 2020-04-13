@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         var eventData = [];
         document.getElementsByClassName("game-container")[0].classList.add("running");
         cycle_func();
-        setTimeout(function(){startAnimation(cycle_func, end_func, events_per_cycle, cycles, interval)}, 1500);
+        setTimeout(function(){startAnimation(cycle_func, end_func, events_per_cycle, cycles, interval)}, 1500); //delete timeout ?
     }
 
     function createBoard(size){
@@ -94,20 +94,20 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.emit('event-data', {'data': data});
   }
 
-  socket.on('connect', function(){
-
-      document.getElementById('data_stream_control').onclick = function(){
-              let action = this.value;
-              socket.emit('start-stream', {'action': action});
-              if(action == "start"){
-                this.value = "stop";
-                this.innerHTML = "Stop Stream";
-              }else{
-                this.value = "start";
-                this.innerHTML = "Start Stream";
-              }
-          };
-      });
+//  socket.on('connect', function(){
+//
+//      document.getElementById('data_stream_control').onclick = function(){
+//              let action = this.value;
+//              socket.emit('start-stream', {'action': action});
+//              if(action == "start"){
+//                this.value = "stop";
+//                this.innerHTML = "Stop Stream";
+//              }else{
+//                this.value = "start";
+//                this.innerHTML = "Start Stream";
+//              }
+//          };
+//      });
 
    document.getElementById('model-calibration').onclick = function(){
       document.getElementById('model-play').disabled = true;
@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
    document.getElementById('start-animation').onclick = function(){
 //    interactive parameters - in future versions - hidden dashboard - to setup parameters
-        runAnimationCycle(function(){select_cell(3);}, sendData, 20, 3, 200)
+        runAnimationCycle(function(){select_cell(3);}, sendData, 5, 1, 800)
    }
 
    document.getElementById("model-play").onclick = function(){

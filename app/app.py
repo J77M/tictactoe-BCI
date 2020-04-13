@@ -4,6 +4,7 @@ from flask_socketio import SocketIO, emit
 from brainflow.board_shim import BrainFlowError
 from enviroment import boards_properties, connection_element_names
 from boards import MainBoard
+from matplotlib import pyplot as plt
 
 app = Flask(__name__)
 
@@ -54,17 +55,29 @@ def disconnect():
         return redirect(url_for("connect"))
     return redirect(url_for("connect"))
 
-@socketio.on("start-stream")
-def data_stream_control(data):
-    if data["action"] == "start":
-        DEVICE.board.start_stream()
-    else:
-        DEVICE.board.stop_stream()
+# @socketio.on("start-stream")
+# def data_stream_control(data):
+#     if data["action"] == "start":
+#         DEVICE.board.start_stream()
+#     else:
+#         DEVICE.board.stop_stream()
 
 @socketio.on("event-data")
-def data_stream_control(data):
-    data = data["data"] # to json !!
-    print("event data received")
+def data_stream_control(event_data):
+    event_data = event_data["data"]
+    data = DEVICE.process_data()
+    timestamps = []
+    for dict in event_data:
+        timestamps.append(dict["timestamp"])
+    timestamps = DEVICE.add_timestamps(timestamps)
+    eeg_channels = DEVICE.board.get_eeg_channels(DEVICE.board.board_id)
+    axes = data[eeg_channels].plot(subplots=True)
+    for i in range(len(timestamps)):
+        if timestamps[i]:
+            for ax in axes:
+                ax.axvline(x=i)
+    plt.show()
+
 
 if __name__ == "__main__":
     app.run()
