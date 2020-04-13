@@ -71,12 +71,12 @@ def data_stream_control(event_data):
         timestamps.append(dict["timestamp"])
     timestamps = DEVICE.add_timestamps(timestamps)
     eeg_channels = DEVICE.board.get_eeg_channels(DEVICE.board.board_id)
-    axes = data[eeg_channels].plot(subplots=True)
-    for i in range(len(timestamps)):
-        if timestamps[i]:
-            for ax in axes:
-                ax.axvline(x=i)
-    plt.show()
+    # axes = data[eeg_channels].plot(subplots=True)
+    # for i in range(len(timestamps)):
+    #     if timestamps[i]:
+    #         for ax in axes:
+    #             ax.axvline(x=i)
+    # plt.show()
 
 
 if __name__ == "__main__":

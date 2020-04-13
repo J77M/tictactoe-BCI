@@ -3,7 +3,6 @@ from brainflow.data_filter import DataFilter, FilterTypes, AggOperations
 from enviroment import connection_element_names
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 
 
 class MainBoard():
@@ -56,18 +55,11 @@ class MainBoard():
             print(self.data.shape)
             self.data = pd.concat([self.data, df])[-(self.sampling_rate*self.timeframe):-1]
         print(self.data.shape)
-        # print(df)
-        # plt.figure()
-        # self.data[eeg_channels].plot(subplots=True)
         for channel in eeg_channels:
-            DataFilter.perform_highpass(self.data[channel].to_numpy(), BoardShim.get_sampling_rate(self.board.board_id), 45.0, 4,
+            DataFilter.perform_highpass(self.data[channel].to_numpy(), BoardShim.get_sampling_rate(self.board.board_id), 1.0, 4,
                                         FilterTypes.BUTTERWORTH.value, 0)
-            DataFilter.perform_lowpass(self.data[channel].to_numpy(), BoardShim.get_sampling_rate(self.board.board_id), 10.0, 4,
+            DataFilter.perform_lowpass(self.data[channel].to_numpy(), BoardShim.get_sampling_rate(self.board.board_id), 30.0, 4,
                                 FilterTypes.BUTTERWORTH.value, 0)
-        # df = pd.DataFrame(np.transpose(self.data))
-        # plt.figure()
-        # self.data[eeg_channels].plot(subplots=True)
-        # plt.show()
         return self.data
 
     def add_timestamps(self, events_timestamps):

@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         function startAnimation(cycle_func, end_func, events_per_cycle, cycles, interval){
             var animation_intervalId = null;
             var animation_counter = 0;
+
             var animate = function(){
                  if(document.querySelectorAll(".data-selected").length != 0){
                     document.querySelectorAll(".data-selected").forEach(function(div){
@@ -24,23 +25,29 @@ document.addEventListener('DOMContentLoaded', () => {
                  let selected_row = document.querySelectorAll(".cell-selected")[0].getAttribute("data-cell-row");
                  let selected_column = document.querySelectorAll(".cell-selected")[0].getAttribute("data-cell-column");
                  if(animation_counter <= events_per_cycle) {
-                      animation_counter++;
-                      let index = Math.floor(Math.random() * 3) // todo: sizexsize value
-                      if(Math.floor(Math.random() * 2) == 0){
-                        document.querySelectorAll(`div[data-cell-row='${index}']`).forEach(function(div){
-                        div.style.backgroundColor = "#ff0000";
-                        div.classList.add("data-selected");
+                    if (choices.length > 0){
+                        var index = Math.floor(Math.random() * choices.length);
+                        var axis = Object.keys(choices[index])[0];
+                        var value = Object.values(choices[index])[0];
+                        document.querySelectorAll(`div[data-cell-${axis}='${value}']`).forEach(function(div){
+                            div.style.backgroundColor = "#ff0000";
+                            div.classList.add("data-selected");
                         });
-                        eventData.push({"row":index, "column":null, "timestamp":Date.now(),
-                         "selected-row":selected_row, "selected-column":selected_column});
-                      } else{
-                        document.querySelectorAll(`div[data-cell-column='${index}']`).forEach(function(div){
-                        div.style.backgroundColor = "#ff0000";
-                        div.classList.add("data-selected");
-                        });
-                        eventData.push({"row":null, "column":index, "timestamp":Date.now(),
-                        "selected-row":selected_row, "selected-column":selected_column});
-                      }
+                        if (axis == "row"){
+                            eventData.push({"row":value, "column":null, "timestamp":Date.now(),
+                            "selected-row":selected_row, "selected-column":selected_column});
+                        } else{
+                            eventData.push({"row":null, "column":value, "timestamp":Date.now(),
+                            "selected-row":selected_row, "selected-column":selected_column});
+                        }
+                        choices.splice(index, 1);
+                    } else {
+                        choices = [];
+                        for (var i=0; i < 3; i++) choices.push({"row": i});
+                        for (var i=0; i < 3; i++) choices.push({"column": i});
+                        animation_counter++;
+                        console.log(`event per cycle : ${animation_counter}`);
+                    }
                  } else {
                       clearInterval(animation_intervalId);
                       console.log(`cycle ${cycle_counter}`);
@@ -55,6 +62,10 @@ document.addEventListener('DOMContentLoaded', () => {
                       setTimeout(function(){startAnimation(cycle_func, end_func, events_per_cycle, cycles, interval)}, 1000);
                  }
             };
+            var _choices = new Array();
+            for (let i=0; i < 3; i++) _choices.push({"row": i});
+            for (let i=0; i < 3; i++) _choices.push({"column": i});
+            var choices = _choices;
             animation_intervalId = null;
             animation_counter = 0;
             animation_intervalId = setInterval(animate, interval);
@@ -160,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
    document.getElementById('start-animation').onclick = function(){
 //    interactive parameters - in future versions - hidden dashboard - to setup parameters
-        runAnimationCycle(function(){select_cell(3);}, sendData, 5, 1, 800)
+        runAnimationCycle(function(){select_cell(3);}, sendData, 3, 3, 100)
    }
 
    document.getElementById("model-play").onclick = function(){
