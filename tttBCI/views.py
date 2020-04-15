@@ -1,21 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for
-from flask_session import Session
-from flask_socketio import SocketIO, emit
+from flask import render_template, request, redirect, url_for
 from brainflow.board_shim import BrainFlowError
-from enviroment import boards_properties, connection_element_names
-from boards import MainBoard
-from matplotlib import pyplot as plt
-
-app = Flask(__name__)
-
-
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
-app.debug = True
-
-socketio = SocketIO(app)
-DEVICE = MainBoard()
-Session(app)
+from tttBCI import app, DEVICE, socketio
+from tttBCI.enviroment import boards_properties, connection_element_names
 
 @app.context_processor
 def variables_setup():
@@ -77,7 +63,3 @@ def data_stream_control(event_data):
     #         for ax in axes:
     #             ax.axvline(x=i)
     # plt.show()
-
-
-if __name__ == "__main__":
-    app.run()

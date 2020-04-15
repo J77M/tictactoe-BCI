@@ -1,8 +1,8 @@
-from brainflow.board_shim import BoardShim, BrainFlowInputParams
-from brainflow.data_filter import DataFilter, FilterTypes, AggOperations
-from enviroment import connection_element_names
 import numpy as np
 import pandas as pd
+from brainflow.board_shim import BoardShim, BrainFlowInputParams
+from brainflow.data_filter import DataFilter, FilterTypes, AggOperations
+from tttBCI.enviroment import connection_element_names
 
 
 class MainBoard():

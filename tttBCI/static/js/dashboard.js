@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
    document.getElementById('start-animation').onclick = function(){
 //    interactive parameters - in future versions - hidden dashboard - to setup parameters
-        runAnimationCycle(function(){select_cell(3);}, sendData, 3, 3, 100)
+        runAnimationCycle(function(){select_cell(3);}, sendData, 3, 4, 300)
    }
 
    document.getElementById("model-play").onclick = function(){
