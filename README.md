@@ -1,5 +1,5 @@
-# tttBCI
-tic tac toe BCI
+# Tic Tac Toe BCI
+
 
 ## Train and Play
 
