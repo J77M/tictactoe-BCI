@@ -23,19 +23,19 @@ def connect():
                 alert = e
         else:
             alert = "Board ID not specified"
-    if DEVICE.connected:
+    if DEVICE.connection:
         return redirect(url_for("dashboard"))
-    return render_template("connect.html", status=DEVICE.status_message, message=alert)
+    return render_template("connect.html", message=alert)
 
 @app.route("/dashboard")
 def dashboard():
-    if DEVICE.connected:
+    if DEVICE.connection:
         return render_template("dashboard.html")
     return redirect(url_for("connect"))
 
 @app.route("/disconnect", methods=["POST"])
 def disconnect():
-    if DEVICE.connected:
+    if DEVICE.connection:
         DEVICE.board.stop_stream()
         DEVICE.disconnect()
         return redirect(url_for("connect"))

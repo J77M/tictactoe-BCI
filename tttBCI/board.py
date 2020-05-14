@@ -8,9 +8,8 @@ from tttBCI.enviroment import connection_element_names
 class MainBoard():
 
     def __init__(self):
-        self.status_message = "disconnected"
         self.timeframe = 30
-        self.connected = False
+        self.connection = False
         self.data = None
 
     def set_board(self, board_id, params):
@@ -19,15 +18,13 @@ class MainBoard():
 
     def disconnect(self):
         self.board.release_session()
-        self.connected = False
+        self.connection = False
         self.data = None
-        self.status_message = "disconnected"
 
     def connect(self):
         self.board.prepare_session()
-        self.connected = True
+        self.connection = True
         self.sampling_rate = self.board.get_sampling_rate(self.board.board_id)
-        self.status_message = "connect"
 
     @staticmethod
     def extract_params(request):
@@ -63,10 +60,10 @@ class MainBoard():
         return self.data
 
     def add_timestamps(self, events_timestamps):
-       timestamp_channel = self.board.get_timestamp_channel(self.board.board_id)
-       timestamps_vals = [None for i in range(self.data.shape[0])]
-       for event_timestamp in events_timestamps:
+        timestamp_channel = self.board.get_timestamp_channel(self.board.board_id)
+        timestamps_vals = [None for i in range(self.data.shape[0])]
+        for event_timestamp in events_timestamps:
            index = (np.abs(np.int64(self.data[timestamp_channel]*1000) - event_timestamp)).argmin()
            print(index, np.int64(self.data[timestamp_channel]*1000)[index], event_timestamp)
            timestamps_vals[index] = True
-       return timestamps_vals
+        return timestamps_vals

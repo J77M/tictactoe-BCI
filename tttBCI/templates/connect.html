@@ -2,6 +2,9 @@
 
 
 {% block body %}
+  <strong>
+    <span class="alert"><font color="red">DISCONNECTED</font></span>
+  </strong>
     <div class="form">
         <div class="alert wrong-data">
           {% if message %}
@@ -69,7 +72,4 @@
             <button type="submit" name="submit_connection_parameters">Submit Connection Parameters</button>
         </form>
     </div>
-  <strong>
-    <span class="alert"><font color="gray">{{status}}</font></span>
-  </strong>
 {% endblock %}

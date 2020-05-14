@@ -86,17 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
             cell.setAttribute("data-cell-row", Math.floor(i/size));
             document.getElementsByClassName('game-container')[0].append(cell);
         }
-    //    document.querySelectorAll(".not-selected").forEach(function(div){
-    //        div.onclick = function(){
-    //            if (! this.classList.contains("disabled")){
-    //                this.innerHTML = "X";
-    //                this.classList.remove("not-selected");
-    //            }
-    //            document.querySelectorAll(".not-selected").forEach(function(div){
-    //            div.classList.add("disabled");
-    //            })
-    //        }
-    //   })
     }
 
   var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
@@ -171,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
    document.getElementById('start-animation').onclick = function(){
 //    interactive parameters - in future versions - hidden dashboard - to setup parameters
-        runAnimationCycle(function(){select_cell(3);}, sendData, 3, 4, 300)
+        runAnimationCycle(function(){select_cell(3);}, sendData, 3, 4, 200)
    }
 
    document.getElementById("model-play").onclick = function(){
