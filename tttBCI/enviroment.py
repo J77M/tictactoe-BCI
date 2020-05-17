@@ -17,3 +17,9 @@ connection_element_names = {
     "board_id": "board_id",
     "log_level": "log_level"
 }
+
+events_values = {
+    "events_per_cycle": 3,
+    "cycles": 2,
+    "interval": 50,
+}

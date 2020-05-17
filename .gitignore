@@ -1,3 +1,5 @@
 __pycache__/
+.idea/
 venv/
 flask_session/
+notebooks/.ipynb_checkpoints/

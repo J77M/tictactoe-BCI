@@ -22,8 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     return;
                  }
-                 let selected_row = document.querySelectorAll(".cell-selected")[0].getAttribute("data-cell-row");
-                 let selected_column = document.querySelectorAll(".cell-selected")[0].getAttribute("data-cell-column");
+                 let selected_row = parseInt(document.querySelectorAll(".cell-selected")[0].getAttribute("data-cell-row"));
+                 let selected_column = parseInt(document.querySelectorAll(".cell-selected")[0].getAttribute("data-cell-column"));
                  if(animation_counter <= events_per_cycle) {
                     if (choices.length > 0){
                         var index = Math.floor(Math.random() * choices.length);
@@ -160,7 +160,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
    document.getElementById('start-animation').onclick = function(){
 //    interactive parameters - in future versions - hidden dashboard - to setup parameters
-        runAnimationCycle(function(){select_cell(3);}, sendData, 3, 4, 200)
+        var events_per_cycle = parseInt(document.getElementById("events-data").getAttribute("data-events-per-cycle"))
+        var cycles = parseInt(document.getElementById("events-data").getAttribute("data-cycles"))
+        var interval = parseInt(document.getElementById("events-data").getAttribute("data-interval"))
+        console.log(
+          `event animation parameters:\nevents_per_cycle: ${events_per_cycle}\ncycles: ${cycles}\ninterval: ${interval}`
+        )
+        runAnimationCycle(function(){select_cell(3);}, sendData, events_per_cycle-1, cycles, interval)
    }
 
    document.getElementById("model-play").onclick = function(){
